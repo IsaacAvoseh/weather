@@ -1,0 +1,105 @@
+body{
+    background-image: url(/osa.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+}
+
+div label{
+    color: white;
+}
+.form-group{
+    padding: 50px;
+}
+    
+  P{
+    margin-top: 40px;
+      background-color: white;
+      font-size: large;
+  }
+  
+  
+
+h1 {
+    background-color: blue;
+    text-align: center;
+    color: rgba(244, 245, 252, 0.733);
+
+}
+
+
+.rainyday {
+    background-image: url('https://media.giphy.com/media/1225Tuw5X5By5W/giphy.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.clearday {
+    background-image: url('https://media.giphy.com/media/ruknycEXRhOs8/giphy.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.cloudyday {
+    background-image: url('https://media.giphy.com/media/aQ7kognlRPDzi/giphy.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 1) { 
+
+    body{
+        background-image: url(/osa.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .rainyday {
+        background-image: url('https://media.giphy.com/media/1225Tuw5X5By5W/giphy.gif');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .clearday {
+        background-image: url('https://media.giphy.com/media/ruknycEXRhOs8/giphy.gif');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .cloudyday {
+        background-image: url('https://media.giphy.com/media/aQ7kognlRPDzi/giphy.gif');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    
+}
+
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+    body{
+        background-image: url(osa.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin: 50px;
+    }
+
+    .rainyday {
+        background-image: url('https://media.giphy.com/media/1225Tuw5X5By5W/giphy.gif');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .clearday {
+        background-image: url('https://media.giphy.com/media/ruknycEXRhOs8/giphy.gif');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .cloudyday {
+        background-image: url('https://media.giphy.com/media/aQ7kognlRPDzi/giphy.gif');
+        background-repeat: no-repeat;
+        background-size: cover;
+    } 
+      
+
+}
