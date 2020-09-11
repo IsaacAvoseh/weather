@@ -11,68 +11,98 @@ if ('serviceWorker' in navigator) {
 }
 
 
+const form = document.querySelector(".top-banner form");
+const input = document.querySelector(".top-banner input");
+const msg = document.querySelector(".top-banner .msg");
+const list = document.querySelector(".ajax-section .cities");
 
+const apiKey = "677b0f602f20d710754ced87f9e9bd49";
 
-// Access DOM elements
-window.addEventListener("load", () =>{
-const reportSection = document.getElementById('weather-report');
-const cityForm = document.getElementById('city-form');
-const cityInput = document.getElementById('city');
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  let inputVal = input.value;
 
-container.classList.remove("rainyday", "cloudyday", "clearday");
+  //check if there's already a city
+  const listItems = list.querySelectorAll(".ajax-section .city");
+  const listItemsArray = Array.from(listItems);
 
+  if (listItemsArray.length > 0) {
+    const filteredArray = listItemsArray.filter(el => {
+      let content = "";
+      //athens,gr
+      if (inputVal.includes(",")) {
+        
+        if (inputVal.split(",")[1].length > 2) {
+          inputVal = inputVal.split(",")[0];
+          content = el
+            .querySelector(".city-name span")
+            .textContent.toLowerCase();
+        } else {
+          content = el.querySelector(".city-name").dataset.name.toLowerCase();
+        }
+      } else {
+        //athens
+        content = el.querySelector(".city-name span").textContent.toLowerCase();
+      }
+      return content == inputVal.toLowerCase();
+    });
 
-// Prepare openweathermap.org request
-let apiRequest = new XMLHttpRequest();
-apiRequest.onreadystatechange = () => {
-  if (apiRequest.readyState === 4) {
-    if (apiRequest.status === 404) {
-      reportSection.style.color = 'red';
-       return reportSection.textContent = "City Not Found!";
+    if (filteredArray.length > 0) {
+      msg.textContent = `You already know the weather for ${
+        filteredArray[0].querySelector(".city-name span").textContent
+      } ...otherwise be more specific by providing the country code as well 😉`;
+      form.reset();
+      input.focus();
+      return;
     }
-    const response = JSON.parse(apiRequest.response);
-    reportSection.textContent = 'The weather in ' + response.name + ' is ' + response.weather[0].main + '.';
-
-    container.classList.remove("rainyday", "cloudyday", "clearday")
-
-    if (response.weather[0].main.includes("Rain")) {
-      container.classList.add("rainyday")
-    } else if (response.weather[0].main.includes("Cloud")) {
-      container.classList.add("cloudyday")
-    } else {
-      container.classList.add("clearday");
-    }
-  
   }
-};
 
-document.getElementById("city").value = 'New York';
+  //ajax here
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
 
-/* 
- * Capture and handle form submit event
- * Prevent default behaviour, prepare and send API request
-*/
-cityForm.addEventListener('submit', ($event) => {
-  $event.preventDefault();
-  container.classList.remove("rainyday", "cloudyday", "clearday");
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const { main, name, sys, weather } = data;
+      const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
+        weather[0]["icon"]
+      }.svg`;
 
-  const chosenCity = cityInput.value;
-  apiRequest.open('GET', 'https://api.openweathermap.org/data/2.5/weather?q=' + chosenCity + '&APPID=677b0f602f20d710754ced87f9e9bd49');
-  apiRequest.send();
+      const text = document.getElementById("text");
+      text.textContent = `The weather in ${name} is ${weather[0].main}.`;
 
+      const li = document.createElement("li");
+      li.classList.add("city");
+      const markup = `
+        <h2 class="city-name" data-name="${name},${sys.country}">
+          <span>${name}</span>
+          <sup>${sys.country}</sup>
+        </h2>
+        <div class="city-temp">${Math.round(main.temp)}<sup>°C</sup></div>
+        <figure>
+          <img class="city-icon" src="${icon}" alt="${
+        weather[0]["description"]
+      }">
+          <figcaption>${weather[0]["description"]}</figcaption>
+        </figure>
+      `;
+      li.innerHTML = markup;
+      list.appendChild(li);
+    })
+    .catch(() => {
+      msg.textContent = "Please search for a valid city 😩";
+    });
 
-
+  msg.textContent = "";
+  form.reset();
+  input.focus();
 });
 
-})
-
-
-// Write a local item..
-const cityInput = document.getElementById('city');
+let inputVal = input.value;
 localStorage.setItem('city', 'input');
 
 // Read a local item..
-var theItemValue = localStorage.getItem(cityInput, "weather");
+var theItemValue = localStorage.getItem(inputVal, "weather");
 
 // Check for changes in the local item and log them..
 window.addEventListener('storage', function(event) {

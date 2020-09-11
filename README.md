@@ -39,6 +39,3 @@ Have an understanding of web accessibility guidelines and why it’s necessary.
 Use Local storage.
 Use an external API in JavaScript.
 Responsive designs and media query.
-
-
-Hosting url -  https://isaac08039261902.web.app
